@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>💖 Pregunta Muy Importante 💖</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --pink: #ff6b9d;
+    --pink-light: #ffb3cc;
+    --pink-pale: #fff0f5;
+    --yellow: #ffd93d;
+    --purple: #c77dff;
+    --green: #6bcb77;
+    --red: #ff4d6d;
+    --white: #ffffff;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--pink-pale);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Fondo de corazones flotantes */
+  .bg-hearts {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .heart-float {
+    position: absolute;
+    font-size: 1.5rem;
+    animation: floatUp linear infinite;
+    opacity: 0.3;
+  }
+
+  @keyframes floatUp {
+    0%   { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+    10%  { opacity: 0.3; }
+    90%  { opacity: 0.3; }
+    100% { transform: translateY(-10vh) rotate(360deg); opacity: 0; }
+  }
+
+  /* Card principal */
+  .card {
+    position: relative;
+    z-index: 10;
+    background: white;
+    border-radius: 32px;
+    padding: 2.5rem 2rem;
+    max-width: 480px;
+    width: 90%;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(255, 107, 157, 0.25), 0 0 0 4px var(--pink-light);
+    animation: popIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  }
+
+  @keyframes popIn {
+    from { transform: scale(0.5) rotate(-5deg); opacity: 0; }
+    to   { transform: scale(1) rotate(0deg); opacity: 1; }
+  }
+
+  /* Sticker de meme */
+  .meme-sticker {
+    width: 130px;
+    height: 130px;
+    margin: 0 auto 1rem;
+    border-radius: 50%;
+    background: var(--pink-pale);
+    border: 4px dashed var(--pink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 5rem;
+    animation: wiggle 2s ease-in-out infinite;
+  }
+
+  @keyframes wiggle {
+    0%,100% { transform: rotate(-5deg) scale(1); }
+    50%      { transform: rotate(5deg) scale(1.05); }
+  }
+
+  h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.9rem;
+    color: var(--pink);
+    line-height: 1.2;
+    margin-bottom: 0.4rem;
+  }
+
+  .subtitle {
+    font-size: 0.95rem;
+    color: #aaa;
+    margin-bottom: 1.5rem;
+    font-style: italic;
+  }
+
+  /* Meme de texto */
+  .meme-text {
+    background: var(--yellow);
+    border-radius: 16px;
+    padding: 0.8rem 1.2rem;
+    font-size: 1rem;
+    font-weight: 900;
+    color: #333;
+    margin-bottom: 1.8rem;
+    border: 3px solid #e6c200;
+    position: relative;
+  }
+
+  .meme-text::before {
+    content: '🧠';
+    position: absolute;
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1.4rem;
+  }
+
+  /* Botones */
+  .buttons {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  .btn {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    padding: 0.8rem 2.2rem;
+    border-radius: 50px;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(255,255,255,0.2);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .btn:hover::after { opacity: 1; }
+  .btn:hover { transform: translateY(-3px) scale(1.05); }
+  .btn:active { transform: scale(0.97); }
+
+  .btn-yes {
+    background: linear-gradient(135deg, var(--pink), #ff3d7f);
+    color: white;
+    box-shadow: 0 6px 20px rgba(255,61,127,0.4);
+  }
+
+  .btn-no {
+    background: linear-gradient(135deg, #e0e0e0, #c5c5c5);
+    color: #555;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    transition: all 0.1s;
+  }
+
+  /* --- PANTALLAS --- */
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  /* Pantalla SÍ */
+  .yes-screen .big-emoji {
+    font-size: 5rem;
+    animation: bounce 0.6s ease infinite alternate;
+  }
+
+  @keyframes bounce {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-12px); }
+  }
+
+  .yes-screen h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2rem;
+    color: var(--pink);
+    margin: 0.5rem 0;
+  }
+
+  .yes-screen p {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1.2rem;
+  }
+
+  .confetti-row {
+    font-size: 1.8rem;
+    letter-spacing: 0.3rem;
+    animation: spin 1s linear infinite;
+    display: inline-block;
+  }
+
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  .meme-gif-placeholder {
+    background: linear-gradient(135deg, var(--pink-pale), #ffe0ec);
+    border-radius: 16px;
+    padding: 1.2rem;
+    margin: 1rem 0;
+    border: 3px solid var(--pink-light);
+    font-size: 3rem;
+  }
+
+  /* Pantalla NO (el botón huye) */
+  #btn-no {
+    position: relative;
+  }
+
+  /* Footer de reinicio */
+  .restart-btn {
+    margin-top: 1.2rem;
+    background: none;
+    border: 2px solid var(--pink-light);
+    color: var(--pink);
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 0.4rem 1.2rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .restart-btn:hover { background: var(--pink-pale); }
+
+  /* Confetti particles */
+  .particle {
+    position: fixed;
+    pointer-events: none;
+    z-index: 999;
+    font-size: 1.5rem;
+    animation: fall 2s ease-in forwards;
+  }
+
+  @keyframes fall {
+    0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+    100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+  }
+
+  /* Toast "no te animas" */
+  .toast {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(100px);
+    background: #333;
+    color: white;
+    padding: 0.7rem 1.5rem;
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    z-index: 200;
+    white-space: nowrap;
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+
+  .caption {
+    font-size: 0.75rem;
+    color: #ccc;
+    margin-top: 1.2rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- Corazones de fondo -->
+<div class="bg-hearts" id="bgHearts"></div>
+
+<!-- Toast -->
+<div class="toast" id="toast">🐔 ¡No seas cobarde! 🐔</div>
+
+<!-- CARD -->
+<div class="card">
+
+  <!-- Pantalla principal -->
+  <div class="screen active" id="screen-main">
+    <div class="meme-sticker">🥺</div>
+    <h1>¿Me amas?</h1>
+    <p class="subtitle">Pregunta muy importante, responde con cuidado</p>
+
+    <div class="meme-text">
+      Yo esperando tu respuesta...<br>
+      <span style="font-size:0.85rem;font-weight:700;">— Tú no sabes el poder que tienes ahora mismo 💀</span>
+    </div>
+
+    <div class="buttons">
+      <button class="btn btn-yes" onclick="showYes()">❤️ ¡Sí, mucho!</button>
+      <button class="btn btn-no" id="btn-no" onmouseover="runAway()" onclick="runAway()">🚫 No</button>
+    </div>
+
+    <p class="caption">* El botón "No" tiene vida propia. Te lo advertimos.</p>
+  </div>
+
+  <!-- Pantalla SÍ -->
+  <div class="screen yes-screen" id="screen-yes">
+    <div class="big-emoji">🥰</div>
+    <h2>¡SABÍA QUE SÍ!</h2>
+    <p>Eres el amor de mi vida y este meme lo confirma científicamente:</p>
+
+    <div class="meme-gif-placeholder">
+      🐶❤️🐶<br>
+      <span style="font-size:1rem;font-weight:900;color:var(--pink)">
+        "Cuando dices que me amas<br>y yo ya lo sabía"
+      </span>
+    </div>
+
+    <div style="font-size:1rem;color:#666;margin-bottom:0.8rem;">
+      Ahora eres oficialmente mi persona favorita del universo entero 🌍✨<br>
+      (y de los universos paralelos también)
+    </div>
+
+    <span class="confetti-row">💖🎉💖🎉💖</span>
+
+    <br>
+    <button class="restart-btn" onclick="restart()">🔄 Responder de nuevo (aunque ya sé)</button>
+  </div>
+
+  <!-- Pantalla NO (por si el botón queda quieto) -->
+  <div class="screen" id="screen-no">
+    <div style="font-size:5rem;">😱</div>
+    <h2 style="font-family:'Fredoka One',cursive;color:var(--red);font-size:1.8rem;">¡NO PUEDE SER!</h2>
+    <div class="meme-text" style="background:#ffe0e0;border-color:#ffaaaa;">
+      🚨 ERROR 404 🚨<br>
+      <span style="font-size:0.85rem;">Amor no encontrado. Recalculando ruta...</span>
+    </div>
+    <p style="font-size:1rem;color:#888;margin-bottom:1rem;">Estoy llamando a mi mamá ahora mismo 📞</p>
+    <div style="font-size:2.5rem;">😭📞👵💔</div>
+    <br>
+    <button class="restart-btn" onclick="restart()">💔 Mentira, volver a intentarlo</button>
+  </div>
+
+</div>
+
+<script>
+  // Corazones flotantes de fondo
+  const emojis = ['💖','💕','💗','💓','🌸','✨','💫','🎀'];
+  const bg = document.getElementById('bgHearts');
+  for(let i = 0; i < 18; i++) {
+    const el = document.createElement('div');
+    el.className = 'heart-float';
+    el.textContent = emojis[Math.floor(Math.random() * emojis.length)];
+    el.style.left = Math.random() * 100 + 'vw';
+    el.style.animationDuration = (6 + Math.random() * 8) + 's';
+    el.style.animationDelay = (Math.random() * 8) + 's';
+    el.style.fontSize = (0.9 + Math.random() * 1.5) + 'rem';
+    bg.appendChild(el);
+  }
+
+  // Contador de intentos del botón NO
+  let noAttempts = 0;
+
+  function runAway() {
+    noAttempts++;
+    const btn = document.getElementById('btn-no');
+    const card = document.querySelector('.card');
+    const cardRect = card.getBoundingClientRect();
+
+    // Mensajes graciosos según intentos
+    const msgs = [
+      '🐔 ¡No seas cobarde!',
+      '😤 ¡Para de perseguirme!',
+      '🏃 ¡No me atraparás!',
+      '🙈 El botón NO no existe aquí',
+      '✋ Mejor di que sí...',
+      '😅 Ok ok... ¡Casi te lo creo!',
+    ];
+
+    showToast(msgs[Math.min(noAttempts - 1, msgs.length - 1)]);
+
+    // Mover botón a posición aleatoria dentro de la card
+    const maxX = 160, maxY = 60;
+    const x = (Math.random() - 0.5) * maxX;
+    const y = (Math.random() - 0.5) * maxY;
+    btn.style.transform = `translate(${x}px, ${y}px) rotate(${(Math.random()-0.5)*20}deg)`;
+    btn.style.transition = 'transform 0.3s cubic-bezier(0.34,1.56,0.64,1)';
+
+    // A los 7 intentos, rinde y va a pantalla NO
+    if(noAttempts >= 7) {
+      setTimeout(() => showNo(), 800);
+    }
+  }
+
+  function showYes() {
+    // Confetti
+    launchConfetti();
+    switchScreen('screen-yes');
+  }
+
+  function showNo() {
+    switchScreen('screen-no');
+  }
+
+  function switchScreen(id) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
+
+  function restart() {
+    noAttempts = 0;
+    const btn = document.getElementById('btn-no');
+    btn.style.transform = '';
+    switchScreen('screen-main');
+  }
+
+  // Toast
+  let toastTimer;
+  function showToast(msg) {
+    clearTimeout(toastTimer);
+    const toast = document.getElementById('toast');
+    toast.textContent = msg;
+    toast.classList.add('show');
+    toastTimer = setTimeout(() => toast.classList.remove('show'), 2000);
+  }
+
+  // Confetti
+  function launchConfetti() {
+    const pieces = ['💖','🎉','✨','💕','🌸','🎀','💫','🥳','❤️','🌟'];
+    for(let i = 0; i < 30; i++) {
+      setTimeout(() => {
+        const el = document.createElement('div');
+        el.className = 'particle';
+        el.textContent = pieces[Math.floor(Math.random() * pieces.length)];
+        el.style.left = Math.random() * 100 + 'vw';
+        el.style.top = '-30px';
+        el.style.animationDuration = (1.5 + Math.random()) + 's';
+        el.style.fontSize = (1 + Math.random()) + 'rem';
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 2500);
+      }, i * 80);
+    }
+  }
+</script>
+</body>
+</html>
